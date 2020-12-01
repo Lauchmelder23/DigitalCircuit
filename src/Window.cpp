@@ -21,6 +21,8 @@ Window::~Window()
 
 void Window::mousePressEvent(QMouseEvent* event)
 {
+	if (simulating) return;
+
 	ui->centralwidget->findChildren<Component*>();
 	QFrame* child = static_cast<QFrame*>(ui->centralwidget->childAt(event->pos()));
 	if (child == nullptr)

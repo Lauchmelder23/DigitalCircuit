@@ -1,1 +1,1 @@
-Start/Stop icons taken from https://iconsmind.com/
+Start/Stop icons taken from https://iconsmind.com/ (modified)
