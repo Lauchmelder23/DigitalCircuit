@@ -16,9 +16,7 @@ Component::Component(QWidget* parent, const QString& resource) :
 	ui = new Ui::Component();
 	ui->setupUi(this);
 
-	ui->label->setPixmap(QPixmap(":/components/and.png"));
-
-	std::cout << "Created Component --" << ui->label->pos().x() << ", " << ui->label->pos().y() << std::endl;
+	ui->label->setPixmap(QPixmap(resource));
 }
 
 void Component::mouseMoveEvent(QMouseEvent* event)

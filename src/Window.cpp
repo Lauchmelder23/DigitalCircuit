@@ -62,17 +62,13 @@ void Window::mousePressEvent(QMouseEvent* event)
 		if (child != nullptr)
 			return;
 
-		// So Qt can't add widgets outside of the constructor apparently
-		// So component cannot be a QFrame, it will have to become just a normal object
-		// And I need one of these open gl gsjdööööööööööööööl<
 		// TODO: I'll just let this leak for now, I just wanna eat dinner...
 		Component* leak = new Component(this, resourcePath);
 		QPoint pos = event->pos() - QPoint {50, 25};
-		leak->setGeometry(QRect(280, 160, 100, 50));
-		leak->setFrameShape(QFrame::StyledPanel);
-		leak->setFrameShadow(QFrame::Raised);
-
-		std::cout << leak->pos().x() << ", " << leak->pos().y() << std::endl;
+		leak->setGeometry(QRect(pos.x(), pos.y(), 100, 50));
+		leak->setFrameShape(QFrame::NoFrame);
+		leak->setFrameShadow(QFrame::Plain);
+		leak->setVisible(true);
 	}
 }
 
@@ -118,6 +114,7 @@ void Window::LoadGhostLabel(const QString& resource)
 		ghostImage = new GhostLabel(this);
 		ghostImage->setGeometry({ 0, 0, 100, 50 });
 		ghostImage->setScaledContents(true);
+		ghostImage->setVisible(true);
 	}
 
 	QPainter p;
