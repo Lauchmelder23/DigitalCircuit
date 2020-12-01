@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>924</width>
+    <height>700</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,23 +20,17 @@
    <widget class="Component" name="frame">
     <property name="geometry">
      <rect>
-      <x>170</x>
+      <x>360</x>
       <y>180</y>
-      <width>100</width>
-      <height>100</height>
+      <width>120</width>
+      <height>80</height>
      </rect>
     </property>
-    <property name="autoFillBackground">
-     <bool>false</bool>
-    </property>
-    <property name="styleSheet">
-     <string notr="true"/>
-    </property>
     <property name="frameShape">
-     <enum>QFrame::NoFrame</enum>
+     <enum>QFrame::StyledPanel</enum>
     </property>
     <property name="frameShadow">
-     <enum>QFrame::Plain</enum>
+     <enum>QFrame::Raised</enum>
     </property>
    </widget>
   </widget>
@@ -52,6 +46,9 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionStart"/>
+   <addaction name="separator"/>
+   <addaction name="actionAddAND"/>
+   <addaction name="actionAddOR"/>
   </widget>
   <action name="actionStart">
    <property name="icon">
@@ -66,6 +63,46 @@
    </property>
    <property name="shortcut">
     <string>F5</string>
+   </property>
+  </action>
+  <action name="actionAddAND">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="assets/resources.qrc">
+     <normaloff>:/components/and.png</normaloff>:/components/and.png</iconset>
+   </property>
+   <property name="text">
+    <string>AddAND</string>
+   </property>
+   <property name="toolTip">
+    <string>Create an AND gate</string>
+   </property>
+   <property name="shortcut">
+    <string>1</string>
+   </property>
+  </action>
+  <action name="actionAddOR">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="assets/resources.qrc">
+     <normaloff>:/components/or.png</normaloff>
+     <selectedoff>:/components/and.png</selectedoff>:/components/or.png</iconset>
+   </property>
+   <property name="text">
+    <string>AddOR</string>
+   </property>
+   <property name="toolTip">
+    <string>Create an OR gate</string>
+   </property>
+   <property name="shortcut">
+    <string>2</string>
    </property>
   </action>
  </widget>

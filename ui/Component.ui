@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>100</width>
-    <height>100</height>
+    <width>102</width>
+    <height>50</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -20,6 +20,9 @@
    <font>
     <pointsize>19</pointsize>
    </font>
+  </property>
+  <property name="cursor">
+   <cursorShape>PointingHandCursor</cursorShape>
   </property>
   <property name="windowTitle">
    <string>Form</string>
@@ -36,14 +39,11 @@
      <x>0</x>
      <y>0</y>
      <width>100</width>
-     <height>100</height>
+     <height>50</height>
     </rect>
    </property>
    <property name="text">
     <string/>
-   </property>
-   <property name="pixmap">
-    <pixmap resource="assets/resources.qrc">:/components/and.png</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>

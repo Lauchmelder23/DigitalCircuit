@@ -7,6 +7,8 @@ namespace Ui {
 }
 
 class Component;
+class QActionGroup;
+class GhostLabel;
 
 class Window : public QMainWindow
 {
@@ -21,6 +23,8 @@ protected:
 
 private:
 	void ToggleSimulation();
+	void ToggleComponentPlacer();
+	void LoadGhostLabel(const QString& resource);
 
 	Ui::Window* ui;
 	bool simulating;
@@ -29,4 +33,8 @@ private:
 		Component* component;
 		QPoint relativePos;
 	} dragInfo;
+
+	GhostLabel* ghostImage;
+	QString resourcePath;
+	QActionGroup* componentGroup;
 };
