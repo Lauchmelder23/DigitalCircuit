@@ -25,6 +25,7 @@ private:
 	void ToggleSimulation();
 	void ToggleComponentPlacer();
 	void LoadGhostLabel(const QString& resource);
+	Component* componentAt(const QPoint& point);
 
 	Ui::Window* ui;
 	bool simulating;
@@ -37,4 +38,6 @@ private:
 	GhostLabel* ghostImage;
 	QString resourcePath;
 	QActionGroup* componentGroup;
+
+	std::vector<Component*> components;
 };

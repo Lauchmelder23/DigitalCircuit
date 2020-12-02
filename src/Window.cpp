@@ -20,39 +20,55 @@ Window::Window() :
 	ui->centralwidget->setAttribute(Qt::WA_TransparentForMouseEvents);
 	setMouseTracking(true);
 
-	LoadGhostLabel(":/components/and.png");
-
 	componentGroup = new QActionGroup(this);
+	componentGroup->addAction(ui->actionAddNOT);
 	componentGroup->addAction(ui->actionAddAND);
+	componentGroup->addAction(ui->actionAddNAND);
 	componentGroup->addAction(ui->actionAddOR);
+	componentGroup->addAction(ui->actionAddNOR);
+	componentGroup->addAction(ui->actionAddXOR);
+	componentGroup->addAction(ui->actionAddXNOR);
 	componentGroup->setExclusionPolicy(QActionGroup::ExclusionPolicy::ExclusiveOptional);
 
-	connect(ui->actionStart, &QAction::triggered, this, &Window::ToggleSimulation);
-	connect(ui->actionAddAND, &QAction::triggered, this, [this]() {resourcePath = ":/components/and.png"; ToggleComponentPlacer(); });
-	connect(ui->actionAddOR, &QAction::triggered, this, [this]() {resourcePath = ":/components/or.png"; ToggleComponentPlacer(); });
+	connect(ui->actionStart,	&QAction::triggered, this, &Window::ToggleSimulation);
+	connect(ui->actionAddNOT,	&QAction::triggered, this, [this]() {resourcePath = ":/components/not.png"; ToggleComponentPlacer(); });
+	connect(ui->actionAddAND,	&QAction::triggered, this, [this]() {resourcePath = ":/components/and.png"; ToggleComponentPlacer(); });
+	connect(ui->actionAddNAND,	&QAction::triggered, this, [this]() {resourcePath = ":/components/nand.png"; ToggleComponentPlacer(); });
+	connect(ui->actionAddOR,	&QAction::triggered, this, [this]() {resourcePath = ":/components/or.png"; ToggleComponentPlacer(); });
+	connect(ui->actionAddNOR,	&QAction::triggered, this, [this]() {resourcePath = ":/components/nor.png"; ToggleComponentPlacer(); });
+	connect(ui->actionAddXOR,	&QAction::triggered, this, [this]() {resourcePath = ":/components/xor.png"; ToggleComponentPlacer(); });
+	connect(ui->actionAddXNOR,	&QAction::triggered, this, [this]() {resourcePath = ":/components/xnor.png"; ToggleComponentPlacer(); });
 }
 
 Window::~Window()
 {
 	delete ui;
 	ui = nullptr;
+
+	delete componentGroup;
+	componentGroup = nullptr;
+
+	delete ghostImage;
+	ghostImage = nullptr;
+
+	for (Component* c : components)
+	{
+		delete c;
+		c = nullptr;
+	}
 }
 
 void Window::mousePressEvent(QMouseEvent* event)
 {
 	if (simulating) return;
 
-	ui->centralwidget->findChildren<Component*>();
-	QFrame* child = static_cast<QFrame*>(ui->centralwidget->childAt(event->pos()));
+	Component* child = componentAt(event->pos());
 
 	QAction* toggledAction = componentGroup->checkedAction();
 	if (toggledAction == nullptr)
 	{
 		if (child == nullptr)
 			return;
-
-		if (!child->isAncestorOf(ui->centralwidget))
-			child = static_cast<QFrame*>(child->parentWidget());
 
 		dragInfo.component = static_cast<Component*>(child);
 		dragInfo.relativePos = event->pos() - child->pos();
@@ -62,13 +78,15 @@ void Window::mousePressEvent(QMouseEvent* event)
 		if (child != nullptr)
 			return;
 
-		// TODO: I'll just let this leak for now, I just wanna eat dinner...
 		Component* leak = new Component(this, resourcePath);
 		QPoint pos = event->pos() - QPoint {50, 25};
 		leak->setGeometry(QRect(pos.x(), pos.y(), 100, 50));
 		leak->setFrameShape(QFrame::NoFrame);
 		leak->setFrameShadow(QFrame::Plain);
 		leak->setVisible(true);
+		leak->setAttribute(Qt::WA_TransparentForMouseEvents);
+
+		components.push_back(leak);
 	}
 }
 
@@ -78,7 +96,7 @@ void Window::mouseMoveEvent(QMouseEvent* event)
 		dragInfo.component->move(event->pos() - dragInfo.relativePos);
 
 	if (ghostImage != nullptr)
-		ghostImage->move(event->pos() - QPoint{50, 25});	// TODO: Hardcoded
+		ghostImage->move(event->pos() - QPoint{50, ui->toolBar->height() + 25});	// TODO: Hardcoded
 
 	event->accept();
 }
@@ -101,6 +119,9 @@ void Window::ToggleComponentPlacer()
 	{
 		delete ghostImage;
 		ghostImage = nullptr;
+
+		for (Component* c : components)
+			c->setAttribute(Qt::WA_TransparentForMouseEvents, false);
 	}
 	else
 	{
@@ -111,10 +132,14 @@ void Window::ToggleComponentPlacer()
 void Window::LoadGhostLabel(const QString& resource)
 {
 	if (ghostImage == nullptr) {
-		ghostImage = new GhostLabel(this);
-		ghostImage->setGeometry({ 0, 0, 100, 50 });
+		ghostImage = new GhostLabel(ui->centralwidget);
+		QPoint mousePos = ui->centralwidget->mapFromGlobal(QCursor::pos());
+		ghostImage->setGeometry({ mousePos.x() - 50, mousePos.y() - 25, 100, 50 });
 		ghostImage->setScaledContents(true);
 		ghostImage->setVisible(true);
+
+		for (Component* c : components)
+			c->setAttribute(Qt::WA_TransparentForMouseEvents, true);
 	}
 
 	QPainter p;
@@ -126,4 +151,15 @@ void Window::LoadGhostLabel(const QString& resource)
 	p.end();
 
 	ghostImage->setPixmap(QPixmap::fromImage(image));
+}
+
+Component* Window::componentAt(const QPoint& point)
+{
+	for (Component* c : components)
+	{
+		if (c->geometry().contains(point))
+			return c;
+	}
+
+	return nullptr;
 }
