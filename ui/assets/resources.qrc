@@ -2,6 +2,8 @@
     <qresource prefix="/toolbar">
         <file>start.png</file>
         <file>stop.png</file>
+        <file>cursor.png</file>
+        <file>wire.png</file>
     </qresource>
     <qresource prefix="/components">
         <file>and.png</file>
@@ -11,5 +13,11 @@
         <file>not.png</file>
         <file>xnor.png</file>
         <file>xor.png</file>
+        <file>lamp.png</file>
+        <file>lamp_off.png</file>
+        <file>lamp_on.png</file>
+        <file>switch.png</file>
+        <file>switch_off.png</file>
+        <file>switch_on.png</file>
     </qresource>
 </RCC>

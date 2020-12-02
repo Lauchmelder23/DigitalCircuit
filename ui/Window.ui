@@ -30,6 +30,9 @@
    </attribute>
    <addaction name="actionStart"/>
    <addaction name="separator"/>
+   <addaction name="actionCursor"/>
+   <addaction name="actionWiring"/>
+   <addaction name="separator"/>
    <addaction name="actionAddNOT"/>
    <addaction name="actionAddAND"/>
    <addaction name="actionAddNAND"/>
@@ -37,6 +40,8 @@
    <addaction name="actionAddNOR"/>
    <addaction name="actionAddXOR"/>
    <addaction name="actionAddXNOR"/>
+   <addaction name="actionAddSwitch"/>
+   <addaction name="actionAddLamp"/>
   </widget>
   <action name="actionStart">
    <property name="icon">
@@ -181,6 +186,63 @@
    </property>
    <property name="shortcut">
     <string>7</string>
+   </property>
+  </action>
+  <action name="actionAddSwitch">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="assets/resources.qrc">
+     <normaloff>:/components/switch.png</normaloff>:/components/switch.png</iconset>
+   </property>
+   <property name="text">
+    <string>AddSwitch</string>
+   </property>
+  </action>
+  <action name="actionAddLamp">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="assets/resources.qrc">
+     <normaloff>:/components/lamp.png</normaloff>:/components/lamp.png</iconset>
+   </property>
+   <property name="text">
+    <string>AddLamp</string>
+   </property>
+  </action>
+  <action name="actionCursor">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="assets/resources.qrc">
+     <normaloff>:/toolbar/cursor.png</normaloff>:/toolbar/cursor.png</iconset>
+   </property>
+   <property name="text">
+    <string>Cursor</string>
+   </property>
+   <property name="toolTip">
+    <string>Default Mode</string>
+   </property>
+  </action>
+  <action name="actionWiring">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="assets/resources.qrc">
+     <normaloff>:/toolbar/wire.png</normaloff>:/toolbar/wire.png</iconset>
+   </property>
+   <property name="text">
+    <string>Wiring</string>
+   </property>
+   <property name="toolTip">
+    <string>Wiring mode</string>
    </property>
   </action>
  </widget>

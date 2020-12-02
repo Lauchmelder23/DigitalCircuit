@@ -12,8 +12,18 @@ public:
 	explicit Component(QWidget* parent);
 	explicit Component(QWidget* parent, const QString& resource);
 
-	void mouseMoveEvent(QMouseEvent* event) override;
+	virtual void mouseMoveEvent(QMouseEvent* event) override;
 
-private:
+	QPoint CenterPos();
+	void Connect(Component* component);
+	const QString& Type();
+
+	virtual bool Action() = 0;
+	
+
+protected:
 	Ui::Component* ui;
+
+	QString type;
+	std::vector<Component*> connections;
 };
