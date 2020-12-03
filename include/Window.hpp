@@ -50,5 +50,5 @@ private:
 	} componentType;
 
 	std::vector<Component*> components;
-	std::vector<QLine> wires;
+	std::vector<QLine*> wires;
 };

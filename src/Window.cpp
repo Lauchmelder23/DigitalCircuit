@@ -76,6 +76,12 @@ Window::~Window()
 		delete c;
 		c = nullptr;
 	}
+
+	for (QLine* line : wires)
+	{
+		delete line;
+		line = nullptr;
+	}
 }
 
 void Window::mousePressEvent(QMouseEvent* event)
@@ -101,7 +107,7 @@ void Window::mousePressEvent(QMouseEvent* event)
 
 		QPoint mousePos = ui->centralwidget->mapFromParent(event->pos());
 		mousePos.setY(mousePos.y() + ui->toolBar->height());
-		wires.push_back(QLine(child->CenterPos(), mousePos));
+		wires.push_back(new QLine(child->CenterPos(), mousePos));
 		// std::cout << "(" << child->x() << ", " << child->y() << ") --> (" << mousePos.x() << ", " << mousePos.y() << ")" << std::endl;
 
 	}
@@ -121,7 +127,7 @@ void Window::mouseMoveEvent(QMouseEvent* event)
 	if (dragInfo.component != nullptr)
 	{
 		dragInfo.component->move(event->pos() - dragInfo.relativePos);
-		// Move wires too lol
+		dragInfo.component->UpdateWires();
 	}
 
 	if (ghostImage != nullptr)
@@ -131,7 +137,7 @@ void Window::mouseMoveEvent(QMouseEvent* event)
 	{
 		QPoint mousePos = ui->centralwidget->mapFromParent(event->pos());
 		mousePos.setY(mousePos.y() + ui->toolBar->height());
-		wires.back().setP2(mousePos);
+		wires.back()->setP2(mousePos);
 	}
 
 	event->accept();
@@ -144,7 +150,7 @@ void Window::mouseReleaseEvent(QMouseEvent* event)
 
 	if (componentGroup->checkedAction() == ui->actionWiring)
 	{
-		Component* connectFrom = componentAt(wires.back().p1());
+		Component* connectFrom = componentAt(wires.back()->p1());
 		Component* connectTo = componentAt(event->pos());
 		if (connectTo == nullptr || connectTo == connectFrom)
 		{ 
@@ -152,8 +158,8 @@ void Window::mouseReleaseEvent(QMouseEvent* event)
 		}
 		else
 		{
-			wires.back().setP2(connectTo->CenterPos());
-			connectTo->Connect(connectFrom);
+			wires.back()->setP2(connectTo->CenterPos());
+			connectTo->Connect(connectFrom, wires.back());
 		}
 	}
 	else if(componentGroup->checkedAction() == ui->actionCursor)
@@ -172,8 +178,8 @@ void Window::paintEvent(QPaintEvent* event)
 	QPainter painter(this);
 	painter.setPen(pen);
 
-	for(QLine line : wires)
-		painter.drawLine(line);
+	for(QLine* line : wires)
+		painter.drawLine(*line);
 
 	update();
 }
